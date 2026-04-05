@@ -1,0 +1,25 @@
+{
+  "name": "dental-leads-automation",
+  "version": "1.0.0",
+  "description": "WhatsApp dental clinic lead automation",
+  "type": "module",
+  "scripts": {
+    "dev:trigger": "npx trigger.dev@4.4.3 dev",
+    "dev:server": "node --loader ts-node/esm src/server.ts",
+    "build": "tsc"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@trigger.dev/sdk": "4.4.3",
+    "express": "^5.2.1"
+  },
+  "devDependencies": {
+    "@trigger.dev/build": "4.4.3",
+    "@types/express": "^5.0.6",
+    "@types/node": "^25.5.2",
+    "ts-node": "^10.9.2",
+    "typescript": "^6.0.2"
+  }
+}
