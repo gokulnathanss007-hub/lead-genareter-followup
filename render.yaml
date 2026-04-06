@@ -1,0 +1,43 @@
+services:
+  - type: web
+    name: dental-leads-backend
+    runtime: node
+    region: oregon           # change to "frankfurt" or "singapore" as needed
+    plan: free               # upgrade to "starter" for always-on (no spin-down)
+    branch: main
+    autoDeploy: true         # redeploy on every push to main
+
+    buildCommand: npm install && npm run build
+    startCommand: npm start
+
+    healthCheckPath: /health
+
+    envVars:
+      - key: NODE_ENV
+        value: production
+
+      # ── Twilio ───────────────────────────────────────────────
+      - key: TWILIO_ACCOUNT_SID
+        sync: false          # fill in Render dashboard — never commit secrets
+      - key: TWILIO_AUTH_TOKEN
+        sync: false
+      - key: TWILIO_WHATSAPP_NUMBER
+        sync: false
+      # Full public URL of this service's webhook endpoint.
+      # Set AFTER the first deploy when you know your Render URL.
+      # e.g. https://dental-leads-backend.onrender.com/webhook/whatsapp
+      - key: TWILIO_WEBHOOK_URL
+        sync: false
+
+      # ── ClickUp ──────────────────────────────────────────────
+      - key: CLICKUP_API_KEY
+        sync: false
+
+      # ── Trigger.dev ──────────────────────────────────────────
+      # Required if your server.ts calls webhookHandler.trigger()
+      - key: TRIGGER_SECRET_KEY
+        sync: false
+
+      # ── Optional ─────────────────────────────────────────────
+      - key: LOG_LEVEL
+        value: info          # debug | info | warn | error

@@ -1,30 +1,30 @@
-// STUB — full implementation comes in the next step
-export interface LeadData {
-  taskId: string;
-  phone: string;
-  name: string | null;
-  problem: string | null;
-  preferredTime: string | null;
-  status: string;
-  conversationHistory: ConversationMessage[];
-  lastMessageAt: string;
-}
+// ── ClickUp adapter ───────────────────────────────────────────────────────────
+// Thin re-export of src/clickup.ts for use inside Trigger.dev tasks.
+// createLead returns just the taskId string (all the webhook-handler needs).
 
-export interface ConversationMessage {
-  role: "user" | "assistant";
-  content: string;
-}
+import {
+  findLeadByPhone,
+  updateLead,
+  createLead as _createLead,
+  LeadStatus,
+  type Lead,
+  type ConversationMessage,
+} from "../../clickup.js";
 
-export async function findLeadByPhone(_phone: string): Promise<LeadData | null> {
-  // TODO: implement in clickup.ts step
-  return null;
-}
+// LeadData is identical to Lead — re-export as an alias so callers
+// don't need to change their imports if the name ever diverges.
+export type LeadData = Lead;
+export type { ConversationMessage };
 
-export async function createLead(_data: Omit<LeadData, "taskId">): Promise<string> {
-  // TODO: implement in clickup.ts step
-  return "";
-}
+export { findLeadByPhone, updateLead, LeadStatus };
 
-export async function updateLead(_taskId: string, _data: Partial<LeadData>): Promise<void> {
-  // TODO: implement in clickup.ts step
+/**
+ * Creates a new ClickUp lead and returns only the taskId string,
+ * which is all the webhook-handler needs after creation.
+ */
+export async function createLead(
+  data: Omit<LeadData, "taskId">
+): Promise<string> {
+  const lead = await _createLead(data);
+  return lead.taskId;
 }
